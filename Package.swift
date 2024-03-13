@@ -1,30 +1,42 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 5.8
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
 let package = Package(
-    name: "CellyCV",
+    name: "CellyKit",
+    defaultLocalization: "en",
     platforms: [
-        .macOS(.v10_15),
         .iOS("15.0"),
     ],
     products: [
-        .library(
-            name: "CellyCV",
-            targets: ["CellyCV"]),
+         .library(
+             name: "CellyKit",
+             targets: ["CellyUtils", "CellyCore", "CellyUI", "CellyCV"]
+         ),
     ],
     dependencies: [
-        .package(path: "CellyUtilities"),
-        .package(path: "CellyCore"),
     ],
     targets: [
+         .target(
+             name: "CellyCV",
+             dependencies: ["CellyUtils", "CellyCore"]
+         ),
+         .target(
+             name: "CellyUtils",
+             dependencies: ["CellyCore"]
+         ),
         .target(
-            name: "CellyCV",
-            dependencies: [.product(name: "CellyUtils", package: "CellyUtilities"),  "CellyCore"]
+            name: "CellyCore"
         ),
-        .testTarget(
-            name: "CellyCVTests",
-            dependencies: ["CellyCV"]),
+         .target(
+             name: "CellyUI",
+             dependencies: ["CellyCore"],
+             resources: [.process("Resources")]
+         ),
+        // .testTarget(
+        //     name: "CellyCVTests",
+        //     dependencies: ["CellyCV"]
+        // ),
     ]
 )
